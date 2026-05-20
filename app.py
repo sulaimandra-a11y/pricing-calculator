@@ -1,20 +1,63 @@
 import streamlit as st
 
-# Admin rates by seller type
-ADMIN_RATE_MALL = 0.085         # 8.5%
-ADMIN_RATE_STAR = 0.065         # 6.5%
-ADMIN_RATE_NON_STAR = 0.050     # 5.0%
+# Product categories
+PRODUCT_CATEGORIES = [
+    "Fashion",
+    "Electronics",
+    "Beauty & Personal Care",
+    "Home & Living",
+    "Mom & Baby",
+    "Sports & Outdoors",
+    "Food & Beverages",
+    "Hobbies & Collections",
+    "Health",
+    "Pets"
+]
 
 # Promo program rates
 PROMO_RATE_GRATIS_ONGKIR = 0.04  # 4%
 PROMO_RATE_CASHBACK = 0.02       # 2%
 PROMO_RATE_PROMO_XTRA = 0.06       # 6%
 
-# Seller type to admin rate mapping
-SELLER_TYPE_RATES = {
-    "Shopee Mall": ADMIN_RATE_MALL,
-    "Star / Star+ Seller": ADMIN_RATE_STAR,
-    "Non-Star Seller": ADMIN_RATE_NON_STAR,
+# Category-based admin rates (seller type -> product category -> rate)
+# TODO: Replace with official Shopee rates from Seller Center documentation
+CATEGORY_RATES = {
+    "Shopee Mall": {
+        "Fashion": 0.085,
+        "Electronics": 0.090,
+        "Beauty & Personal Care": 0.080,
+        "Home & Living": 0.082,
+        "Mom & Baby": 0.087,
+        "Sports & Outdoors": 0.084,
+        "Food & Beverages": 0.078,
+        "Hobbies & Collections": 0.083,
+        "Health": 0.086,
+        "Pets": 0.081,
+    },
+    "Star / Star+ Seller": {
+        "Fashion": 0.065,
+        "Electronics": 0.070,
+        "Beauty & Personal Care": 0.060,
+        "Home & Living": 0.062,
+        "Mom & Baby": 0.067,
+        "Sports & Outdoors": 0.064,
+        "Food & Beverages": 0.058,
+        "Hobbies & Collections": 0.063,
+        "Health": 0.066,
+        "Pets": 0.061,
+    },
+    "Non-Star Seller": {
+        "Fashion": 0.050,
+        "Electronics": 0.055,
+        "Beauty & Personal Care": 0.045,
+        "Home & Living": 0.047,
+        "Mom & Baby": 0.052,
+        "Sports & Outdoors": 0.049,
+        "Food & Beverages": 0.043,
+        "Hobbies & Collections": 0.048,
+        "Health": 0.051,
+        "Pets": 0.046,
+    },
 }
 
 # Konfigurasi halaman utama web app
@@ -38,6 +81,10 @@ with col2:
         "Tipe Penjual Shopee",
         options=["Non-Star Seller", "Star / Star+ Seller", "Shopee Mall"]
     )
+    kategori_produk = st.selectbox(
+        "Kategori Produk Shopee",
+        options=PRODUCT_CATEGORIES
+    )
     
     # Checkbox untuk program promo
     ikut_gratis_ongkir = st.checkbox("Ikut Program Gratis Ongkir XTRA")
@@ -46,7 +93,7 @@ with col2:
 
 # --- LOGIKA PERHITUNGAN ---
 # Tentukan tarif admin berdasarkan pilihan
-tarif_admin = SELLER_TYPE_RATES[tipe_penjual]
+tarif_admin = CATEGORY_RATES[tipe_penjual][kategori_produk]
 
 # Tambahkan tarif promo tambahan jika dicentang
 tarif_promo = 0.0
@@ -91,7 +138,7 @@ if harga_jual > 0:
 
     # Breakdown detail dalam bentuk list ekspander yang rapi
     with st.expander("Lihat Rincian Potongan Lebih Detail"):
-        st.write(f"• **Biaya Admin ({tipe_penjual}):** Rp {round(biaya_admin_rp):,}")
+        st.write(f"• **Biaya Admin ({tipe_penjual} - {kategori_produk}):** Rp {round(biaya_admin_rp):,}")
         st.write(f"• **Biaya Program XTRA (Gratis Ongkir/Cashback/Promo XTRA):** Rp {round(biaya_promo_rp):,}")
         st.write(f"• **Total Modal Awal:** Rp {modal:,}")
 else:
