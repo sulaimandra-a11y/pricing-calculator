@@ -1,5 +1,21 @@
 import streamlit as st
 
+# Admin rates by seller type
+ADMIN_RATE_MALL = 0.085         # 8.5%
+ADMIN_RATE_STAR = 0.065         # 6.5%
+ADMIN_RATE_NON_STAR = 0.050     # 5.0%
+
+# Promo program rates
+PROMO_RATE_GRATIS_ONGKIR = 0.04  # 4%
+PROMO_RATE_CASHBACK = 0.02       # 2%
+
+# Seller type to admin rate mapping
+SELLER_TYPE_RATES = {
+    "Shopee Mall": ADMIN_RATE_MALL,
+    "Star / Star+ Seller": ADMIN_RATE_STAR,
+    "Non-Star Seller": ADMIN_RATE_NON_STAR,
+}
+
 # Konfigurasi halaman utama web app
 st.set_page_config(page_title="Kalkulator Harga Shopee", page_icon="🛍️", layout="centered")
 
@@ -28,19 +44,14 @@ with col2:
 
 # --- LOGIKA PERHITUNGAN ---
 # Tentukan tarif admin berdasarkan pilihan
-if tipe_penjual == "Shopee Mall":
-    tarif_admin = 0.085  # 8.5%
-elif tipe_penjual == "Star / Star+ Seller":
-    tarif_admin = 0.065  # 6.5%
-else:
-    tarif_admin = 0.050  # Non-Star 5.0%
+tarif_admin = SELLER_TYPE_RATES[tipe_penjual]
 
 # Tambahkan tarif promo tambahan jika dicentang
 tarif_promo = 0.0
 if ikut_gratis_ongkir:
-    tarif_promo += 0.04  # Asumsi Gratis Ongkir XTRA 4%
+    tarif_promo += PROMO_RATE_GRATIS_ONGKIR
 if ikut_cashback:
-    tarif_promo += 0.02  # Asumsi Cashback XTRA 2%
+    tarif_promo += PROMO_RATE_CASHBACK
 
 # Hitung nominal profit rupiah yang diinginkan
 target_profit_rp = modal * (profit_persen / 100)
@@ -80,4 +91,4 @@ if harga_jual > 0:
         st.write(f"• **Biaya Program XTRA (Gratis Ongkir/Cashback):** Rp {round(biaya_promo_rp):,}")
         st.write(f"• **Total Modal Awal:** Rp {modal:,}")
 else:
-    st.error("Terjadi kesalahan dalam perhitungan persentase biaya.")
+    st.error("Terjadi kesalahan dalam perhitungan persentase biaya anda.")
