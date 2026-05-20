@@ -92,7 +92,7 @@ if harga_jual > 0:
     # Breakdown detail dalam bentuk list ekspander yang rapi
     with st.expander("Lihat Rincian Potongan Lebih Detail"):
         st.write(f"• **Biaya Admin ({tipe_penjual}):** Rp {round(biaya_admin_rp):,}")
-        st.write(f"• **Biaya Program XTRA (Gratis Ongkir/Cashback):** Rp {round(biaya_promo_rp):,}")
+        st.write(f"• **Biaya Program XTRA (Gratis Ongkir/Cashback/Promo XTRA):** Rp {round(biaya_promo_rp):,}")
         st.write(f"• **Total Modal Awal:** Rp {modal:,}")
 else:
     st.error("Terjadi kesalahan dalam perhitungan persentase biaya anda.")
