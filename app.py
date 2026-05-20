@@ -8,6 +8,7 @@ ADMIN_RATE_NON_STAR = 0.050     # 5.0%
 # Promo program rates
 PROMO_RATE_GRATIS_ONGKIR = 0.04  # 4%
 PROMO_RATE_CASHBACK = 0.02       # 2%
+PROMO_RATE_PROMO_XTRA = 0.06       # 6%
 
 # Seller type to admin rate mapping
 SELLER_TYPE_RATES = {
@@ -41,6 +42,7 @@ with col2:
     # Checkbox untuk program promo
     ikut_gratis_ongkir = st.checkbox("Ikut Program Gratis Ongkir XTRA")
     ikut_cashback = st.checkbox("Ikut Program Cashback XTRA")
+    ikut_promo_xtra = st.checkbox("Ikut Program Promo XTRA")
 
 # --- LOGIKA PERHITUNGAN ---
 # Tentukan tarif admin berdasarkan pilihan
@@ -52,6 +54,8 @@ if ikut_gratis_ongkir:
     tarif_promo += PROMO_RATE_GRATIS_ONGKIR
 if ikut_cashback:
     tarif_promo += PROMO_RATE_CASHBACK
+if ikut_promo_xtra:
+    tarif_promo += PROMO_RATE_PROMO_XTRA
 
 # Hitung nominal profit rupiah yang diinginkan
 target_profit_rp = modal * (profit_persen / 100)
